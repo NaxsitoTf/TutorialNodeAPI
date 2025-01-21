@@ -56,35 +56,14 @@ function uno(tabla, id) {
     });
 }
 
-function agregar(tabla, data) {
-    return (data && data.id == 0) ? insertar(tabla, data) : actualizar(tabla, data);
-}
 
-function insertar(tabla, data) {
+
+function agregar(tabla, data) {
     return new Promise((resolve, reject) => {
-        conexion.query(`INSERT INTO ${tabla} SET ? `, data, (error, result) => {
+        conexion.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], (error, result) => {
             return error ? reject(error) : resolve(result);
 
         })
-    });
-}
-
-function actualizar(tabla, data) {
-    return new Promise((resolve, reject) => {
-        const campos = Object.keys(data)
-            .filter(key => key !== 'id') // Excluir el campo `id`
-            .map(key => `${key} = ?`) // Generar las asignaciones `columna = ?`
-            .join(', ');
-
-        const valores = Object.values(data).filter((_, index) => Object.keys(data)[index] !== 'id');
-
-        conexion.query(
-            `UPDATE ${tabla} SET ${campos} WHERE id = ?`,
-            [...valores, data.id], // Pasar los valores de las columnas y el `id`
-            (error, result) => {
-                return error ? reject(error) : resolve(result);
-            }
-        );
     });
 }
 
@@ -98,9 +77,19 @@ function eliminar(tabla, data) {
     });
 }
 
+function query(tabla, consulta) {
+    return new Promise((resolve, reject) => {
+        conexion.query(`SELECT * FROM ${tabla} WHERE  ?`, consulta , (error, result) => {
+            return error ? reject(error) : resolve(result[0]);
+
+        })
+    });
+}
+
 module.exports = {
     todos,
     uno,
     eliminar,
     agregar,
+    query,
 }

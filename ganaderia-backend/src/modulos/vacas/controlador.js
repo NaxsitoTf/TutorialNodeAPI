@@ -1,4 +1,4 @@
-const TABLA = 'clientes'
+const TABLA = 'vacas'
 
 
 module.exports = function (dbInyectada) {

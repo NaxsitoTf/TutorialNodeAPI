@@ -23,7 +23,9 @@ function conMysql() {
         }
 
     });
+ 
 
+    
     conexion.on('error', err => {
         console.log('[db err]', err);
         if (err.code == 'PROTOCOL_CONNECTION_LOST') {

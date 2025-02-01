@@ -4,7 +4,7 @@ const config = require('./config');
 const cors = require('cors');
 
 
-const clientes = require('./modulos/clientes/rutas.js');
+const vacas = require('./modulos/vacas/rutas.js');
 const usuarios = require('./modulos/usuarios/rutas.js');
 const auth = require('./modulos/auth/rutas.js');
 
@@ -28,7 +28,7 @@ app.use(cors({
   }));
 
 // rutas 
-app.use('/api/clientes', clientes);
+app.use('/api/vacas', vacas);
 app.use('/api/usuarios', usuarios);
 app.use('/api/auth', auth);
 
